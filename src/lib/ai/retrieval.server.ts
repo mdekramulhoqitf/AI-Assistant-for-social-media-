@@ -28,6 +28,17 @@ const INTENT_QUERY_HINTS: Partial<Record<Intent, string>> = {
   hosting_domain: "hosting domain server",
   support: "support help policy revision refund",
   greeting: "about company",
+  dentist_product: "dentist dental clinic patient management appointment booking software",
+  dentist_appointment: "dentist appointment booking scheduling notifications reminders",
+  dentist_patient_management: "dentist patient management records clinic workflow",
+  wishhub: "wishhub digital greeting card wish card",
+  wishhub_card: "wishhub greeting card birthday anniversary wedding festival",
+  wishhub_scheduling: "wishhub schedule reminder delivery",
+  wishhub_event: "wishhub festival event occasion card",
+  vingobd: "vingobd card design canva bangladeshi event",
+  vingobd_card_design: "vingobd card editor design build generate",
+  vingobd_bangladeshi_event: "vingobd eid bijoy dibosh pohela boishakh bangladeshi event card",
+  digital_product_general: "digitalhub product platform dentist wishhub vingobd",
 };
 
 function truncate(value: string, max: number): string {

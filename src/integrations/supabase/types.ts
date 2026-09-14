@@ -12,6 +12,31 @@ export type Database = {
   __InternalSupabase: {
     PostgrestVersion: "14.5"
   }
+  graphql_public: {
+    Tables: {
+      [_ in never]: never
+    }
+    Views: {
+      [_ in never]: never
+    }
+    Functions: {
+      graphql: {
+        Args: {
+          extensions?: Json
+          operationName?: string
+          query?: string
+          variables?: Json
+        }
+        Returns: Json
+      }
+    }
+    Enums: {
+      [_ in never]: never
+    }
+    CompositeTypes: {
+      [_ in never]: never
+    }
+  }
   public: {
     Tables: {
       ai_runs: {
@@ -719,6 +744,17 @@ export type Database = {
         | "general_question"
         | "human_handoff"
         | "unknown"
+        | "dentist_product"
+        | "dentist_appointment"
+        | "dentist_patient_management"
+        | "wishhub"
+        | "wishhub_card"
+        | "wishhub_scheduling"
+        | "wishhub_event"
+        | "vingobd"
+        | "vingobd_card_design"
+        | "vingobd_bangladeshi_event"
+        | "digital_product_general"
       kb_category:
         | "company"
         | "service"
@@ -877,6 +913,9 @@ export type CompositeTypes<
     : never
 
 export const Constants = {
+  graphql_public: {
+    Enums: {},
+  },
   public: {
     Enums: {
       ai_decision: ["answer", "clarify", "collect_lead", "handoff", "ignore"],
@@ -898,6 +937,17 @@ export const Constants = {
         "general_question",
         "human_handoff",
         "unknown",
+        "dentist_product",
+        "dentist_appointment",
+        "dentist_patient_management",
+        "wishhub",
+        "wishhub_card",
+        "wishhub_scheduling",
+        "wishhub_event",
+        "vingobd",
+        "vingobd_card_design",
+        "vingobd_bangladeshi_event",
+        "digital_product_general",
       ],
       kb_category: [
         "company",

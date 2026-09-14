@@ -61,6 +61,9 @@ export function heuristicIntent(message: string): Intent {
   const m = message.toLowerCase();
   const has = (...words: string[]) => words.some((w) => m.includes(w));
   if (has("agent", "human", "manager", "call me", "kotha bolte", "human lagbe")) return "human_handoff";
+  if (has("dentist", "dental", "chamber")) return "dentist_product";
+  if (has("wishhub", "wish hub", "wish card", "greeting card")) return "wishhub";
+  if (has("vingobd", "vingo")) return "vingobd";
   if (has("price", "pricing", "cost", "koto", "কত", "দাম", "budget", "quote")) return "pricing";
   if (has("ecommerce", "e-commerce", "online shop", "shop website")) return "ecommerce";
   if (has("website", "web site", "ওয়েবসাইট", "landing page")) return "website_development";
@@ -149,6 +152,17 @@ async function classify(
         content: [
           "You classify incoming customer messages for a digital agency assistant.",
           `Allowed intents: ${INTENTS.join(", ")}.`,
+          "DigitalHub sells THREE distinct products alongside its core agency services — never mix them up:",
+          "- Dentist (dentist_product / dentist_appointment / dentist_patient_management): a dental clinic management system.",
+          "  'Appointment booking', 'patient management/records' and 'clinic/chamber' ALWAYS mean Dentist, never WishHub.",
+          "- WishHub (wishhub / wishhub_card / wishhub_scheduling / wishhub_event): sending/scheduling digital greeting/wish cards",
+          "  (birthday, anniversary, wedding, festival, etc.) via email/SMS/WhatsApp. 'Scheduling' here means timing a card's",
+          "  delivery or a reminder — it never means booking a dental/business appointment.",
+          "- VingoBD (vingobd / vingobd_card_design / vingobd_bangladeshi_event): a Canva-like tool for designing/building/editing",
+          "  cards, focused on Bangladeshi events (Eid, Bijoy Dibosh, Pohela Boishakh, etc.).",
+          "If a card request is ambiguous between sending a ready wish (WishHub) and designing/customizing a card (VingoBD),",
+          "use decision 'clarify' and ask which one they need.",
+          "Use digital_product_general only when the customer clearly means one of these three products but it is unclear which.",
           `Allowed decisions: ${DECISIONS.join(", ")}.`,
           "decision meaning: answer = can reply from knowledge/general chat; clarify = needs a follow-up question;",
           "collect_lead = sales opportunity, gather contact/requirements; handoff = a human is needed; ignore = spam/empty.",
