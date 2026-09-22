@@ -8,7 +8,8 @@ import { Label } from "@/components/ui/label";
 import { BrandLockup } from "@/components/brand";
 import { useAuth } from "@/hooks/use-auth";
 import { supabase } from "@/integrations/supabase/client";
-import { lovable } from "@/integrations/lovable/index";
+
+const ALLOWED_GOOGLE_EMAIL = "digitalhubbdlimited@gmail.com";
 
 export const Route = createFileRoute("/auth")({
   head: () => ({
@@ -41,7 +42,14 @@ function AuthPage() {
   const [busy, setBusy] = useState(false);
 
   useEffect(() => {
-    if (!loading && session) navigate({ to: "/dashboard", replace: true });
+    if (loading || !session) return;
+    const signedInEmail = session.user.email?.toLowerCase();
+    if (signedInEmail !== ALLOWED_GOOGLE_EMAIL && session.user.app_metadata?.provider === "google") {
+      supabase.auth.signOut();
+      toast.error(`Only ${ALLOWED_GOOGLE_EMAIL} can sign in with Google.`);
+      return;
+    }
+    navigate({ to: "/dashboard", replace: true });
   }, [loading, session, navigate]);
 
   async function handleSubmit(e: React.FormEvent) {
@@ -69,15 +77,11 @@ function AuthPage() {
   }
 
   async function handleGoogle() {
-    const result = await lovable.auth.signInWithOAuth("google", {
-      redirect_uri: window.location.origin,
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: { redirectTo: `${window.location.origin}/auth` },
     });
-    if (result.error) {
-      toast.error("Google sign-in failed. Please try again.");
-      return;
-    }
-    if (result.redirected) return;
-    navigate({ to: "/dashboard", replace: true });
+    if (error) toast.error("Google sign-in failed. Please try again.");
   }
 
   return (
